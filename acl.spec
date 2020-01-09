@@ -1,7 +1,7 @@
 Summary: Access control list utilities
 Name: acl
 Version: 2.2.49
-Release: 5%{?dist}
+Release: 6%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: libattr-devel >= 2.4.1
 BuildRequires: autoconf, libtool >= 1.5, gettext, gawk
@@ -14,6 +14,7 @@ Patch3: acl-2.2.49-bz467936.patch
 Patch4: acl-2.2.49-tests.patch
 Patch5: acl-2.2.49-setfacl-restore.patch
 Patch6: acl-2.2.49-bz658734.patch
+Patch7: acl-2.2.49-bz720318.patch
 License: GPLv2+
 Group: System Environment/Base
 URL: http://acl.bestbits.at/
@@ -55,12 +56,13 @@ defined in POSIX 1003.1e draft standard 17.
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
+%patch7 -p1
 autoconf
 
 %build
 touch .census
 # acl abuses libexecdir
-%configure --libdir=/%{_lib} --libexecdir=%{_libdir}
+%configure --libdir=/%{_lib} --libexecdir=%{_libdir} LDFLAGS="$LDFLAGS -Wl,-z,relro"
 make %{?_smp_mflags} LIBTOOL="libtool --tag=CC"
 
 %check
@@ -121,6 +123,10 @@ rm -rf $RPM_BUILD_ROOT
 /%{_lib}/libacl.so.*
 
 %changelog
+* Tue Jul 26 2011 Kamil Dudka <kdudka@redhat.com> 2.2.49-6
+- add function acl_extended_file_nofollow() (#720318)
+- build with partial RELRO support as a security enhancement (#723998)
+
 * Mon Jun 27 2011 Kamil Dudka <kdudka@redhat.com> 2.2.49-5
 - clarify that removing a non-existent acl entry is not an error (#674883)
 - update project URL in package specification (#702638)

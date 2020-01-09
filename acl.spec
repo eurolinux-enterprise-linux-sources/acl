@@ -1,7 +1,7 @@
 Summary: Access control list utilities
 Name: acl
 Version: 2.2.49
-Release: 6%{?dist}
+Release: 7%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: libattr-devel >= 2.4.1
 BuildRequires: autoconf, libtool >= 1.5, gettext, gawk
@@ -15,6 +15,13 @@ Patch4: acl-2.2.49-tests.patch
 Patch5: acl-2.2.49-setfacl-restore.patch
 Patch6: acl-2.2.49-bz658734.patch
 Patch7: acl-2.2.49-bz720318.patch
+
+# fix test-suite failure on a repeated run (#743847)
+Patch8: acl-2.2.49-bz743847.patch
+
+# fix SIGSEGV of getfacl -e on overly long group name (#1025246)
+Patch9: acl-2.2.49-bz1025246.patch
+
 License: GPLv2+
 Group: System Environment/Base
 URL: http://acl.bestbits.at/
@@ -57,6 +64,8 @@ defined in POSIX 1003.1e draft standard 17.
 %patch5 -p1
 %patch6 -p1
 %patch7 -p1
+%patch8 -p1
+%patch9 -p1
 autoconf
 
 %build
@@ -123,6 +132,10 @@ rm -rf $RPM_BUILD_ROOT
 /%{_lib}/libacl.so.*
 
 %changelog
+* Fri Sep 23 2016 Kamil Dudka <kdudka@redhat.com> 2.2.49-7
+- fix SIGSEGV of getfacl -e on overly long group name (#1025246)
+- fix test-suite failure on a repeated run (#743847)
+
 * Tue Jul 26 2011 Kamil Dudka <kdudka@redhat.com> 2.2.49-6
 - add function acl_extended_file_nofollow() (#720318)
 - build with partial RELRO support as a security enhancement (#723998)

@@ -1,7 +1,7 @@
 Summary: Access control list utilities
 Name: acl
 Version: 2.2.49
-Release: 7%{?dist}
+Release: 7%{?dist}.1
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: libattr-devel >= 2.4.1
 BuildRequires: autoconf, libtool >= 1.5, gettext, gawk
@@ -21,6 +21,9 @@ Patch8: acl-2.2.49-bz743847.patch
 
 # fix SIGSEGV of getfacl -e on overly long group name (#1025246)
 Patch9: acl-2.2.49-bz1025246.patch
+
+# fix spurious acl_check() failure on setfacl --restore (#1451801)
+Patch10: acl-2.2.52-setfacl-restore-initialize.patch
 
 License: GPLv2+
 Group: System Environment/Base
@@ -66,6 +69,7 @@ defined in POSIX 1003.1e draft standard 17.
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
+%patch10 -p1
 autoconf
 
 %build
@@ -132,6 +136,9 @@ rm -rf $RPM_BUILD_ROOT
 /%{_lib}/libacl.so.*
 
 %changelog
+* Mon Jun 26 2017 Kamil Dudka <dkdudka@redhat.com> - 2.2.49-7.el6_9.1
+- fix spurious acl_check() failure on setfacl --restore (#1451801)
+
 * Fri Sep 23 2016 Kamil Dudka <kdudka@redhat.com> 2.2.49-7
 - fix SIGSEGV of getfacl -e on overly long group name (#1025246)
 - fix test-suite failure on a repeated run (#743847)

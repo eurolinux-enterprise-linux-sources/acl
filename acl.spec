@@ -1,7 +1,7 @@
 Summary: Access control list utilities
 Name: acl
 Version: 2.2.49
-Release: 4%{?dist}
+Release: 5%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: libattr-devel >= 2.4.1
 BuildRequires: autoconf, libtool >= 1.5, gettext, gawk
@@ -13,9 +13,10 @@ Patch2: acl-2.2.49-setfacl-walk.patch
 Patch3: acl-2.2.49-bz467936.patch
 Patch4: acl-2.2.49-tests.patch
 Patch5: acl-2.2.49-setfacl-restore.patch
+Patch6: acl-2.2.49-bz658734.patch
 License: GPLv2+
 Group: System Environment/Base
-URL: http://oss.sgi.com/projects/xfs/
+URL: http://acl.bestbits.at/
 
 %description
 This package contains the getfacl and setfacl utilities needed for
@@ -53,6 +54,7 @@ defined in POSIX 1003.1e draft standard 17.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
 autoconf
 
 %build
@@ -119,6 +121,10 @@ rm -rf $RPM_BUILD_ROOT
 /%{_lib}/libacl.so.*
 
 %changelog
+* Mon Jun 27 2011 Kamil Dudka <kdudka@redhat.com> 2.2.49-5
+- clarify that removing a non-existent acl entry is not an error (#674883)
+- update project URL in package specification (#702638)
+
 * Tue May 25 2010 Kamil Dudka <kdudka@redhat.com> 2.2.49-4
 - let acl depend on the same version of libacl (#595674)
 
